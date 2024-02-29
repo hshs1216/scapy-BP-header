@@ -4,9 +4,12 @@ import threading
 from bp_header import BP_header
 
 def create_bp_header():
-    header = b''
-    for key, value in BP_header.items():
-        header += value["value"].to_bytes(value["digits"] // 2, byteorder='big')
+    # バイト列を構築するためのフォーマット文字列を作成
+    format_str = ">BBHHHHHHHHHQBHHH6s32s32s"
+    values = [BP_header[field]["value"] for field in BP_header]
+    packed_data = struct.pack(format_str, *values)
+    # バイト列として直接取得
+    print(packed_data)
     return header
 
 BP_HEADER = create_bp_header()
