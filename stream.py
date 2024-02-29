@@ -1,8 +1,15 @@
 import socket
 import struct
 import threading
+from bp_header import BP_header
 
-BP_HEADER = b'\x06\x81\x10\x11\x04\x02\x02\x02\x02\x02\x00\x00\x82\xea\xfd\xaa\x6e\x01\xFF\x2c\x00\x05\x10'
+def create_bp_header():
+    header = b''
+    for key, value in BP_header.items():
+        header += value["value"].to_bytes(value["digits"] // 2, byteorder='big')
+    return header
+
+BP_HEADER = create_bp_header()
 
 def add_bp_header(data):
     return BP_HEADER + data
